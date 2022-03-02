@@ -15,4 +15,23 @@
  * 在命令行中执行：npm link 将该工具配置到node全局 然后就可以执行iris了
  */
 
-console.log("iris 启动啦。 哈哈哈"); 
+const program = require("commander")
+const helpOptions = require('./bin/core/help')
+
+/**
+ * 使用commander库进行参数解析
+ */
+
+/**
+ * 版本号查看
+ */
+program.version(require('./package.json').version, '-v, --version')
+program.version(require('./package.json').version)
+
+/**
+ * 增加可选参数: module
+ */
+helpOptions()
+
+
+program.parse(process.argv)

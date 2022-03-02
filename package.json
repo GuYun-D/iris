@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/GuYun-D/iris/issues"
   },
-  "homepage": "https://github.com/GuYun-D/iris#readme"
+  "homepage": "https://github.com/GuYun-D/iris#readme",
+  "devDependencies": {
+    "commander": "^9.0.0"
+  }
 }
