@@ -17,6 +17,7 @@
 
 const program = require("commander")
 const helpOptions = require('./bin/core/help')
+const createCommands = require('./bin/core/create')
 
 /**
  * 使用commander库进行参数解析
@@ -32,6 +33,9 @@ program.version(require('./package.json').version)
  * 增加可选参数: module
  */
 helpOptions()
+
+// 指令集初始化
+createCommands()
 
 
 program.parse(process.argv)
