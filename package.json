@@ -1,0 +1,26 @@
+{
+  "name": "iris",
+  "version": "0.0.1",
+  "description": "创建vue项目的脚手架工具",
+  "main": "index.js",
+  "bin": {
+    "iris": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuYun-D/iris.git"
+  },
+  "keywords": [
+    "vue",
+    "node"
+  ],
+  "author": "GuYun-D",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GuYun-D/iris/issues"
+  },
+  "homepage": "https://github.com/GuYun-D/iris#readme"
+}
