@@ -1,5 +1,9 @@
 const program = require('commander')
-const { createProjectAction, addComponentAction } = require('./actions')
+const { 
+  createProjectAction, 
+  addComponentAction, 
+  addPageAction 
+} = require('./actions')
 
 /**
  * 创建指令集
@@ -17,8 +21,16 @@ const createCommands = () => {
 
   // 添加组件的命令
   program.command("addCpn <name>")
-    .description("add a vue component, for example: iris addCpn login -d src/login")
-    .action(addComponentAction)
+    .description("add a vue component, for example: iris addCpn login [-d src/login]")
+    .action((name) => {
+      addComponentAction(name, program._optionValues.dest || "src/components")
+    })
+
+  program.command("addPage <page>")
+    .description("add vue page and router config, for example: iris addPage login [-d src/page]")
+    .action((page) => {
+      addPageAction(page, program._optionValues.dest || "src/pages")
+    })
 }
 
 module.exports = createCommands

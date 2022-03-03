@@ -1,12 +1,18 @@
-const { compileEjs } = require('../utils/compile.ejs')
-
 const { promisify } = require('util')
 // downloadGitRepoFn 不支持使用promise，使用内置模块promisify转化，将他支持promise
+const path = require('path')
 const downloadGitRepoFn = promisify(require('download-git-repo'))
 const { vueRepo } = require('../config/repo-config.js')
 const { commandSpawn } = require('../utils/terminal')
 // const open = require('open')
+const { compileEjs } = require('../utils/compile.ejs')
+const { writeToFile } = require("../utils/write.file")
+const mkdirSync = require("../utils/mkdir")
 
+/**
+ * 创建项目
+ * @param {String} project 项目名称
+ */
 const createProjectAction = async (project) => {
   console.log('\033[42;30m CREATING \033[40;32m Iris is creating a Vue project for you\033[0m')
   // clone
@@ -48,13 +54,43 @@ const createProjectAction = async (project) => {
  * 将创建好的文件放到对应的文件中
  */
 const addComponentAction = async (name, dest) => {
+  // 编译模板获得结果
   const result = await compileEjs("component.vue.ejs", {
-    name: "NavBar",
-    lowername: "navbar"
+    name,
+    lowername: this.name.toLowerCase()
   })
+  // 写入文件
+  const targetPath = path.resolve(dest, `${name}.vue`)
+  writeToFile(targetPath, result)
+}
+
+/**
+ * page的创建
+ * @param {String} pageName 页面名称
+ * @param {String} dest 写入路径
+ */
+const addPageAction = async (pageName, dest) => {
+  const data = {
+    name: pageName, lowername: pageName.toLowerCase()
+  }
+  // 编译ejs模板
+  const pageComponentResult = await compileEjs("component.vue.ejs", data)
+  const pageRouterResult = await compileEjs("router.vue.ejs", data)
+
+  // 路径拼接
+  if (mkdirSync(dest)) {
+    const componentTargetPath = path.resolve(dest, `${pageName}.vue`)
+    const routerTargetPath = path.resolve(dest, 'router.js')
+
+    // 写入
+    writeToFile(componentTargetPath, pageComponentResult)
+    writeToFile(routerTargetPath, pageRouterResult)
+  }
+
 }
 
 module.exports = {
   createProjectAction,
-  addComponentAction
+  addComponentAction,
+  addPageAction
 }
