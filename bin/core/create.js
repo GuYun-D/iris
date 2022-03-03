@@ -1,5 +1,5 @@
 const program = require('commander')
-const { createProjectAction } = require('./actions')
+const { createProjectAction, addComponentAction } = require('./actions')
 
 /**
  * 创建指令集
@@ -14,6 +14,11 @@ const createCommands = () => {
     .action((project, others) => {
       createProjectAction(project)
     })
+
+  // 添加组件的命令
+  program.command("addCpn <name>")
+    .description("add a vue component, for example: iris addCpn login -d src/login")
+    .action(addComponentAction)
 }
 
 module.exports = createCommands

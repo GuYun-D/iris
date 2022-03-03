@@ -1,3 +1,5 @@
+const { compileEjs } = require('../utils/compile.ejs')
+
 const { promisify } = require('util')
 // downloadGitRepoFn 不支持使用promise，使用内置模块promisify转化，将他支持promise
 const downloadGitRepoFn = promisify(require('download-git-repo'))
@@ -35,6 +37,24 @@ const createProjectAction = async (project) => {
 
 }
 
+/**
+ * 创建组件
+ * @param {string} name 创建组件名称
+ * @param {*} dest 
+ * 
+ * 找到对应的ejs模板
+ * 编译ejs模板得到result
+ * 将result写入进vue模板中
+ * 将创建好的文件放到对应的文件中
+ */
+const addComponentAction = async (name, dest) => {
+  const result = await compileEjs("component.vue.ejs", {
+    name: "NavBar",
+    lowername: "navbar"
+  })
+}
+
 module.exports = {
-  createProjectAction
+  createProjectAction,
+  addComponentAction
 }
