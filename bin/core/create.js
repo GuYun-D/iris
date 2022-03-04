@@ -1,8 +1,9 @@
 const program = require('commander')
-const { 
-  createProjectAction, 
-  addComponentAction, 
-  addPageAction 
+const {
+  createProjectAction,
+  addComponentAction,
+  addPageAction,
+  addStoreAction
 } = require('./actions')
 
 /**
@@ -30,6 +31,13 @@ const createCommands = () => {
     .description("add vue page and router config, for example: iris addPage login [-d src/page]")
     .action((page) => {
       addPageAction(page, program._optionValues.dest || "src/pages")
+    })
+
+  program
+    .command("addStore <store>")
+    .description("add vuex module, for exmaple: iris addStore login [-d src/store/modules]")
+    .action((store) => {
+      addStoreAction(store, program._optionValues.dest || "src/store/modules")
     })
 }
 

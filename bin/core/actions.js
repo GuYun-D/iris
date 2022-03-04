@@ -57,7 +57,7 @@ const addComponentAction = async (name, dest) => {
   // 编译模板获得结果
   const result = await compileEjs("component.vue.ejs", {
     name,
-    lowername: this.name.toLowerCase()
+    lowername: this.name
   })
   // 写入文件
   const targetPath = path.resolve(dest, `${name}.vue`)
@@ -71,16 +71,19 @@ const addComponentAction = async (name, dest) => {
  */
 const addPageAction = async (pageName, dest) => {
   const data = {
-    name: pageName, lowername: pageName.toLowerCase()
+    name: pageName, lowername: pageName
   }
   // 编译ejs模板
   const pageComponentResult = await compileEjs("component.vue.ejs", data)
   const pageRouterResult = await compileEjs("router.vue.ejs", data)
 
+  const targetPath = path.resolve(dest, pageName)
+
+
   // 路径拼接
-  if (mkdirSync(dest)) {
-    const componentTargetPath = path.resolve(dest, `${pageName}.vue`)
-    const routerTargetPath = path.resolve(dest, 'router.js')
+  if (mkdirSync(targetPath)) {
+    const componentTargetPath = path.resolve(targetPath, `${pageName}.js`)
+    const routerTargetPath = path.resolve(targetPath, 'type.js')
 
     // 写入
     writeToFile(componentTargetPath, pageComponentResult)
@@ -89,8 +92,30 @@ const addPageAction = async (pageName, dest) => {
 
 }
 
+/**
+ * 创建store
+ * @param {String} storeName store名字
+ * @param {String} dest 输出路径
+ */
+const addStoreAction = async (storeName, dest) => {
+  const storeResult = await compileEjs("vuex-store.vue.ejs", {})
+  const typeResult = await compileEjs("vuex-type.vue.ejs", {})
+
+  const targetPath = path.resolve(dest, storeName)
+
+  if (mkdirSync(targetPath)) {
+    const storeTargetPath = path.resolve(targetPath, `${storeName}.vue`)
+    const typeTargetPath = path.resolve(targetPath, 'router.js')
+
+    // 写入
+    writeToFile(storeTargetPath, storeResult)
+    writeToFile(typeTargetPath, typeResult)
+  }
+}
+
 module.exports = {
   createProjectAction,
   addComponentAction,
-  addPageAction
+  addPageAction,
+  addStoreAction
 }
